@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<stringAttribute key="bad_container_name" value="/Graph-Explorer-demo/widgetset_compile"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/Graph-Explorer-demo"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.vaadin.tools.WidgetsetCompiler"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-out WebContent/VAADIN/widgetsets -style PRETTY -draftCompile -localWorkers 8 -logLevel INFO com.vaadin.graph.demo.GraphExplorerDemoWidgetset"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Graph-Explorer-demo"/>
+</launchConfiguration>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-dependencies/2.3.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-dependencies/2.3.0/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-user/2.3.0/gwt-user.jar"/>
+	<classpathentry kind="var" path="VAADIN_DOWNLOAD/gwt-dev/2.3.0/gwt-dev.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry exported="true" kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?ivyXmlPath=ivy.xml&amp;confs=*&amp;ivySettingsPath=%24%7Bworkspace_loc%3AGraph-Explorer-demo%2Fivysettings.xml%7D&amp;loadSettingsOnDemand=false&amp;propertyFiles=&amp;acceptedTypes=jar%2Cbundle%2Cejb%2Cmaven-plugin&amp;sourceTypes=source&amp;javadocTypes=javadoc&amp;sourceSuffixes=-source%2C-sources%2C-src&amp;javadocSuffixes=-javadoc%2C-javadocs%2C-doc%2C-docs&amp;alphaOrder=false&amp;resolveInWorkspace=true&amp;resolveBeforeLaunch=false">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
