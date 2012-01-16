@@ -52,7 +52,7 @@ public class GraphExplorerDemo extends Application {
 
     @Override
     public void init() {
-        window = new Window("Graph explorer");
+        window = new Window("Graph Explorer demo");
         setMainWindow(window);
 
         GraphExplorer graph = new GraphExplorer(new DefaultGraphLoader(
