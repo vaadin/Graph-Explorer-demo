@@ -16,13 +16,13 @@
 			<description>
 			Vaadin application class to start</description>
 			<param-name>application</param-name>
-			<param-value>com.vaadin.graph.demo.GraphExplorerDemo</param-value>
+			<param-value>com.vaadin.graph.demo.neo4j.Neo4JDemo</param-value>
 		</init-param>
 		<init-param>
 			<description>
 			Application widgetset</description>
 			<param-name>widgetset</param-name>
-			<param-value>com.vaadin.graph.demo.GraphExplorerDemoWidgetset</param-value>
+			<param-value>com.vaadin.graph.demo.neo4j.Neo4JDemoWidgetset</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>

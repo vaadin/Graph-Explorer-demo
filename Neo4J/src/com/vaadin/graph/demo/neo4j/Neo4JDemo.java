@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vaadin.graph.demo;
+package com.vaadin.graph.demo.neo4j;
 
 import java.util.AbstractCollection;
 import java.util.AbstractMap;
@@ -45,7 +45,7 @@ import com.vaadin.ui.Window;
  * The Application's "main" class
  */
 @SuppressWarnings("serial")
-public class GraphExplorerDemo extends Application {
+public class Neo4JDemo extends Application {
     private Window window;
     private final GraphProvider graphProvider = new MyGraphProvider(
             "/Users/marlon/graphdb");
