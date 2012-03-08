@@ -37,7 +37,6 @@ import com.vaadin.graph.EdgeDirection;
 import com.vaadin.graph.GraphExplorer;
 import com.vaadin.graph.GraphProvider;
 import com.vaadin.graph.Vertex;
-import com.vaadin.ui.UriFragmentUtility;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
@@ -47,40 +46,36 @@ import com.vaadin.ui.Window;
 @SuppressWarnings("serial")
 public class Neo4JDemo extends Application {
     private Window window;
-    private final GraphProvider graphProvider = new MyGraphProvider(
+    private final GraphProvider graphProvider = new Neo4JGraphProvider(
             "/Users/marlon/graphdb");
 
     @Override
     public void init() {
-        window = new Window("Graph Explorer demo");
+        window = new Window("Graph Explorer Neo4J demo");
         setMainWindow(window);
 
         GraphExplorer graph = new GraphExplorer(new DefaultGraphLoader(
                 graphProvider));
         window.addComponent(graph);
 
-        final UriFragmentUtility urifu = new UriFragmentUtility();
-        window.addComponent(urifu);
-
-        window.getContent().setSizeFull();
         VerticalLayout content = (VerticalLayout) window.getContent();
+        content.setSizeFull();
         content.setExpandRatio(graph, 1);
-        content.setExpandRatio(urifu, 0);
     }
 
-    private static final class MyGraphProvider implements GraphProvider {
+    private static final class Neo4JGraphProvider implements GraphProvider {
         private final EmbeddedGraphDatabase inner;
 
-        public MyGraphProvider(String dbDir) {
+        public Neo4JGraphProvider(String dbDir) {
             inner = new EmbeddedGraphDatabase(dbDir);
         }
 
-        public MyVertex getVertexById(String id) {
-            return new MyVertex(inner.getNodeById(Long.parseLong(id)));
+        public Neo4JVertex getVertexById(String id) {
+            return new Neo4JVertex(inner.getNodeById(Long.parseLong(id)));
         }
 
-        public MyVertex getHomeVertex() {
-            return new MyVertex(inner.getReferenceNode());
+        public Neo4JVertex getHomeVertex() {
+            return new Neo4JVertex(inner.getReferenceNode());
         }
 
         public Collection<String> getEdgeLabels() {
@@ -95,23 +90,23 @@ public class Neo4JDemo extends Application {
             inner.shutdown();
         }
 
-        public MyVertex getSource(Edge edge) {
-            return new MyVertex(((MyEdge) edge).inner.getStartNode());
+        public Neo4JVertex getSource(Edge edge) {
+            return new Neo4JVertex(((Neo4JEdge) edge).inner.getStartNode());
         }
 
-        public MyVertex getDestination(Edge edge) {
-            return new MyVertex(((MyEdge) edge).inner.getEndNode());
+        public Neo4JVertex getDestination(Edge edge) {
+            return new Neo4JVertex(((Neo4JEdge) edge).inner.getEndNode());
         }
 
-        public MyVertex getOpposite(Vertex vertex, Edge edge) {
-            return new MyVertex(
-                    ((MyEdge) edge).inner
-                            .getOtherNode(((MyVertex) vertex).inner));
+        public Neo4JVertex getOpposite(Vertex vertex, Edge edge) {
+            return new Neo4JVertex(
+                    ((Neo4JEdge) edge).inner
+                            .getOtherNode(((Neo4JVertex) vertex).inner));
         }
 
         public Collection<Edge> getEdges(Vertex node, final String label,
                 EdgeDirection dir) {
-            final Iterable<Relationship> rels = ((MyVertex) node).inner
+            final Iterable<Relationship> rels = ((Neo4JVertex) node).inner
                     .getRelationships(new RelationshipType() {
 
                         public String name() {
@@ -130,8 +125,8 @@ public class Neo4JDemo extends Application {
                             return iter.hasNext();
                         }
 
-                        public MyEdge next() {
-                            return new MyEdge(iter.next());
+                        public Neo4JEdge next() {
+                            return new Neo4JEdge(iter.next());
                         }
 
                         public void remove() {
@@ -154,10 +149,10 @@ public class Neo4JDemo extends Application {
         }
     }
 
-    private static final class MyVertex implements Vertex {
+    private static final class Neo4JVertex implements Vertex {
         private final Node inner;
 
-        public MyVertex(Node inner) {
+        public Neo4JVertex(Node inner) {
             this.inner = inner;
         }
 
@@ -174,10 +169,10 @@ public class Neo4JDemo extends Application {
         }
     }
 
-    private static final class MyEdge implements Edge {
+    private static final class Neo4JEdge implements Edge {
         private final Relationship inner;
 
-        public MyEdge(Relationship inner) {
+        public Neo4JEdge(Relationship inner) {
             this.inner = inner;
         }
 
