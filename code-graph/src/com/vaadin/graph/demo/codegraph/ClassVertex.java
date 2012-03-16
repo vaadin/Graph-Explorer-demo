@@ -4,11 +4,11 @@ import java.util.HashSet;
 
 import com.vaadin.graph.Vertex;
 
-public class CodeVertex implements Vertex {
+public class ClassVertex implements Vertex {
 
     private Class<?> cls;
 
-    public CodeVertex(Class<?> cls) {
+    public ClassVertex(Class<?> cls) {
         this.cls = cls;
     }
 
@@ -22,5 +22,9 @@ public class CodeVertex implements Vertex {
 
     public Iterable<String> getPropertyKeys() {
         return new HashSet<String>();
+    }
+
+    public String getLabel() {
+        return cls.toString();
     }
 }

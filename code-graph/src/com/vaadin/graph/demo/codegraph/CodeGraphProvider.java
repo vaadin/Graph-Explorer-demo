@@ -11,7 +11,7 @@ import com.vaadin.ui.Component;
 public class CodeGraphProvider implements GraphProvider {
 
     public Vertex getHomeVertex() {
-        return new CodeVertex(Component.class);
+        return new ClassVertex(Component.class);
     }
 
     public Vertex getDestination(Edge edge) {

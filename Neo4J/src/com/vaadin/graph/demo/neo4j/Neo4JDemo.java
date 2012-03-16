@@ -126,7 +126,8 @@ public class Neo4JDemo extends Application {
                         }
 
                         public Neo4JEdge next() {
-                            return new Neo4JEdge(iter.next());
+                            return new Neo4JEdge(Neo4JGraphProvider.this,
+                                    iter.next());
                         }
 
                         public void remove() {
@@ -150,6 +151,9 @@ public class Neo4JDemo extends Application {
     }
 
     private static final class Neo4JVertex implements Vertex {
+        private static final String WORD = "word";
+        private static final String TITLE = "title";
+        private static final String NAME = "name";
         private final Node inner;
 
         public Neo4JVertex(Node inner) {
@@ -157,7 +161,14 @@ public class Neo4JDemo extends Application {
         }
 
         public Iterable<String> getPropertyKeys() {
-            return inner.getPropertyKeys();
+            Set<String> keys = new HashSet<String>();
+            for (String key : inner.getPropertyKeys()) {
+                keys.add(key);
+            }
+            keys.remove(NAME);
+            keys.remove(TITLE);
+            keys.remove(WORD);
+            return keys;
         }
 
         public Object getProperty(String key, Object defaultValue) {
@@ -167,12 +178,28 @@ public class Neo4JDemo extends Application {
         public String getId() {
             return "" + inner.getId();
         }
+
+        public String getLabel() {
+            String property;
+            if (inner.hasProperty(NAME)) {
+                property = NAME;
+            } else if (inner.hasProperty(TITLE)) {
+                property = TITLE;
+            } else if (inner.hasProperty(WORD)) {
+                property = WORD;
+            } else {
+                return "Home";
+            }
+            return "" + inner.getProperty(property);
+        }
     }
 
     private static final class Neo4JEdge implements Edge {
         private final Relationship inner;
+        private Neo4JGraphProvider parent;
 
-        public Neo4JEdge(Relationship inner) {
+        public Neo4JEdge(Neo4JGraphProvider parent, Relationship inner) {
+            this.parent = parent;
             this.inner = inner;
         }
 
@@ -239,6 +266,10 @@ public class Neo4JDemo extends Application {
                     };
                 }
             };
+        }
+
+        public Vertex getOtherEnd(Vertex v) {
+            return parent.getOpposite(v, this);
         }
     }
 }
