@@ -9,15 +9,13 @@ import com.vaadin.ui.Window;
 public class CodeGraphDemo extends Application {
     @Override
     public void init() {
-        setMainWindow(new Window("Graph Explorer Neo4J demo"));
+        VerticalLayout content = new VerticalLayout();
+        setMainWindow(new Window("Graph Explorer Neo4J demo", content));
 
         GraphExplorer graph = new GraphExplorer(new DefaultGraphLoader(
                 new CodeGraphProvider()));
-        new Window("Graph Explorer Neo4J demo").addComponent(graph);
-
-        VerticalLayout content = (VerticalLayout) new Window(
-                "Graph Explorer Neo4J demo").getContent();
-        content.setSizeFull();
+        content.addComponent(graph);
         content.setExpandRatio(graph, 1);
+        content.setSizeFull();
     }
 }
