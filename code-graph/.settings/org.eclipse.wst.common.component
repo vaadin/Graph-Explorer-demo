@@ -3,6 +3,7 @@
     <wb-module deploy-name="code-graph">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/lib" source-path="/WebContent/WEB-INF/lib"/>
         <property name="context-root" value="code-graph"/>
         <property name="java-output-path" value="/code-graph/build/classes"/>
     </wb-module>
