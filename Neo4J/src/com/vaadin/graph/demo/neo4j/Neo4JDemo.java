@@ -31,7 +31,7 @@ import com.vaadin.ui.*;
 @SuppressWarnings("serial")
 public class Neo4JDemo extends Application {
     private Window window;
-    private final GraphRepository graphProvider = new Neo4JGraphProvider(
+    private final GraphRepository<Neo4JNode, Neo4JArc> graphRepo = new Neo4JRepository(
             "/Users/marlon/graphdb");
 
     @Override
@@ -39,8 +39,8 @@ public class Neo4JDemo extends Application {
         window = new Window("Graph Explorer Neo4J demo");
         setMainWindow(window);
 
-        GraphExplorer graph = new GraphExplorer(new DefaultGraphLoader(
-                graphProvider));
+        GraphExplorer graph = new GraphExplorer(
+                new DefaultGraphController<Neo4JNode, Neo4JArc>(graphRepo));
         window.addComponent(graph);
 
         VerticalLayout content = (VerticalLayout) window.getContent();
@@ -48,19 +48,20 @@ public class Neo4JDemo extends Application {
         content.setExpandRatio(graph, 1);
     }
 
-    private static final class Neo4JGraphProvider implements GraphRepository {
+    private static final class Neo4JRepository implements
+            GraphRepository<Neo4JNode, Neo4JArc> {
         private final EmbeddedGraphDatabase inner;
 
-        public Neo4JGraphProvider(String dbDir) {
+        public Neo4JRepository(String dbDir) {
             inner = new EmbeddedGraphDatabase(dbDir);
         }
 
-        public Neo4JVertex getVertexById(String id) {
-            return new Neo4JVertex(inner.getNodeById(Long.parseLong(id)));
+        public Neo4JNode getVertexById(String id) {
+            return new Neo4JNode(inner.getNodeById(Long.parseLong(id)));
         }
 
-        public Neo4JVertex getHomeVertex() {
-            return new Neo4JVertex(inner.getReferenceNode());
+        public Neo4JNode getHomeVertex() {
+            return new Neo4JNode(inner.getReferenceNode());
         }
 
         public Collection<String> getEdgeLabels() {
@@ -75,43 +76,41 @@ public class Neo4JDemo extends Application {
             inner.shutdown();
         }
 
-        public Neo4JVertex getSource(Arc edge) {
-            return new Neo4JVertex(((Neo4JEdge) edge).inner.getStartNode());
+        public Neo4JNode getSource(Neo4JArc edge) {
+            return new Neo4JNode(edge.inner.getStartNode());
         }
 
-        public Neo4JVertex getDestination(Arc edge) {
-            return new Neo4JVertex(((Neo4JEdge) edge).inner.getEndNode());
+        public Neo4JNode getDestination(Neo4JArc edge) {
+            return new Neo4JNode(edge.inner.getEndNode());
         }
 
-        public Neo4JVertex getOpposite(Node vertex, Arc edge) {
-            return new Neo4JVertex(
-                    ((Neo4JEdge) edge).inner
-                            .getOtherNode(((Neo4JVertex) vertex).inner));
+        public Neo4JNode getOpposite(Neo4JNode vertex, Neo4JArc edge) {
+            return new Neo4JNode(edge.inner.getOtherNode(vertex.inner));
         }
 
-        public Collection<Arc> getEdges(Node node, final String label,
-                ArcDirection dir) {
-            final Iterable<Relationship> rels = ((Neo4JVertex) node).inner
-                    .getRelationships(new RelationshipType() {
+        public Collection<Neo4JArc> getEdges(Neo4JNode node,
+                final String label, ArcDirection dir) {
+            final Iterable<Relationship> rels = node.inner.getRelationships(
+                    new RelationshipType() {
 
                         public String name() {
                             return label;
                         }
                     }, Direction.valueOf(dir.toString()));
 
-            return new AbstractCollection<Arc>() {
+            return new AbstractCollection<Neo4JArc>() {
 
                 @Override
-                public Iterator<Arc> iterator() {
-                    return new Iterator<Arc>() {
+                public Iterator<Neo4JArc> iterator() {
+                    return new Iterator<Neo4JArc>() {
                         Iterator<Relationship> iter = rels.iterator();
 
                         public boolean hasNext() {
                             return iter.hasNext();
                         }
 
-                        public Neo4JEdge next() {
-                            return new Neo4JEdge(Neo4JGraphProvider.this,
+                        public Neo4JArc next() {
+                            return new Neo4JArc(Neo4JRepository.this,
                                     iter.next());
                         }
 
@@ -135,13 +134,13 @@ public class Neo4JDemo extends Application {
         }
     }
 
-    private static final class Neo4JVertex implements Node {
+    private static final class Neo4JNode implements Node {
         private static final String WORD = "word";
         private static final String TITLE = "title";
         private static final String NAME = "name";
         private final org.neo4j.graphdb.Node inner;
 
-        public Neo4JVertex(org.neo4j.graphdb.Node inner) {
+        public Neo4JNode(org.neo4j.graphdb.Node inner) {
             this.inner = inner;
         }
 
@@ -179,11 +178,11 @@ public class Neo4JDemo extends Application {
         }
     }
 
-    private static final class Neo4JEdge implements Arc {
+    private static final class Neo4JArc implements Arc {
         private final org.neo4j.graphdb.Relationship inner;
-        private Neo4JGraphProvider parent;
+        private Neo4JRepository parent;
 
-        public Neo4JEdge(Neo4JGraphProvider parent,
+        public Neo4JArc(Neo4JRepository parent,
                 org.neo4j.graphdb.Relationship inner) {
             this.parent = parent;
             this.inner = inner;
@@ -255,7 +254,7 @@ public class Neo4JDemo extends Application {
         }
 
         public Node getOtherEnd(Node v) {
-            return parent.getOpposite(v, this);
+            return parent.getOpposite((Neo4JNode) v, this);
         }
     }
 }
