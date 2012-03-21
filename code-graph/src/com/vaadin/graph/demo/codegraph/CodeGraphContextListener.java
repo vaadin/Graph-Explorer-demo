@@ -10,6 +10,7 @@ public class CodeGraphContextListener implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
         // TODO: initialize the data
-        event.getServletContext().setAttribute("graph-data", null);
+        event.getServletContext().setAttribute(CodeGraphDemo.CODE_GRAPH_DATA,
+                null);
     }
 }

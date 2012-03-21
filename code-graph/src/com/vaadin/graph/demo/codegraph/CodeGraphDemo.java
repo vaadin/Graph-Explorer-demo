@@ -10,15 +10,16 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 public class CodeGraphDemo extends Application {
+    public static final String CODE_GRAPH_DATA = "code-graph-data";
+
     @Override
     public void init() {
-
         ServletContext servletContext = ((WebApplicationContext) getContext())
                 .getHttpSession().getServletContext();
-        servletContext.getAttribute("graph-data");
+        servletContext.getAttribute(CODE_GRAPH_DATA);
 
         VerticalLayout content = new VerticalLayout();
-        setMainWindow(new Window("Graph Explorer Neo4J demo", content));
+        setMainWindow(new Window("Code graph demo", content));
 
         GraphExplorer graph = new GraphExplorer(new DefaultGraphLoader(
                 new CodeGraphProvider()));
