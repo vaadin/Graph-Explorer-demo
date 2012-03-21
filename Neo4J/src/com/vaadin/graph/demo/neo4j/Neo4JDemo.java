@@ -15,30 +15,15 @@
  */
 package com.vaadin.graph.demo.neo4j;
 
-import java.util.AbstractCollection;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.RelationshipType;
-import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.graphdb.*;
+import org.neo4j.kernel.*;
 
-import com.vaadin.Application;
-import com.vaadin.graph.DefaultGraphLoader;
-import com.vaadin.graph.Edge;
-import com.vaadin.graph.EdgeDirection;
-import com.vaadin.graph.GraphExplorer;
-import com.vaadin.graph.GraphProvider;
-import com.vaadin.graph.Vertex;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.*;
+import com.vaadin.graph.*;
+import com.vaadin.graph.Node;
+import com.vaadin.ui.*;
 
 /**
  * The Application's "main" class
@@ -46,7 +31,7 @@ import com.vaadin.ui.Window;
 @SuppressWarnings("serial")
 public class Neo4JDemo extends Application {
     private Window window;
-    private final GraphProvider graphProvider = new Neo4JGraphProvider(
+    private final GraphRepository graphProvider = new Neo4JGraphProvider(
             "/Users/marlon/graphdb");
 
     @Override
@@ -63,7 +48,7 @@ public class Neo4JDemo extends Application {
         content.setExpandRatio(graph, 1);
     }
 
-    private static final class Neo4JGraphProvider implements GraphProvider {
+    private static final class Neo4JGraphProvider implements GraphRepository {
         private final EmbeddedGraphDatabase inner;
 
         public Neo4JGraphProvider(String dbDir) {
@@ -90,22 +75,22 @@ public class Neo4JDemo extends Application {
             inner.shutdown();
         }
 
-        public Neo4JVertex getSource(Edge edge) {
+        public Neo4JVertex getSource(Arc edge) {
             return new Neo4JVertex(((Neo4JEdge) edge).inner.getStartNode());
         }
 
-        public Neo4JVertex getDestination(Edge edge) {
+        public Neo4JVertex getDestination(Arc edge) {
             return new Neo4JVertex(((Neo4JEdge) edge).inner.getEndNode());
         }
 
-        public Neo4JVertex getOpposite(Vertex vertex, Edge edge) {
+        public Neo4JVertex getOpposite(Node vertex, Arc edge) {
             return new Neo4JVertex(
                     ((Neo4JEdge) edge).inner
                             .getOtherNode(((Neo4JVertex) vertex).inner));
         }
 
-        public Collection<Edge> getEdges(Vertex node, final String label,
-                EdgeDirection dir) {
+        public Collection<Arc> getEdges(Node node, final String label,
+                ArcDirection dir) {
             final Iterable<Relationship> rels = ((Neo4JVertex) node).inner
                     .getRelationships(new RelationshipType() {
 
@@ -114,11 +99,11 @@ public class Neo4JDemo extends Application {
                         }
                     }, Direction.valueOf(dir.toString()));
 
-            return new AbstractCollection<Edge>() {
+            return new AbstractCollection<Arc>() {
 
                 @Override
-                public Iterator<Edge> iterator() {
-                    return new Iterator<Edge>() {
+                public Iterator<Arc> iterator() {
+                    return new Iterator<Arc>() {
                         Iterator<Relationship> iter = rels.iterator();
 
                         public boolean hasNext() {
@@ -150,13 +135,13 @@ public class Neo4JDemo extends Application {
         }
     }
 
-    private static final class Neo4JVertex implements Vertex {
+    private static final class Neo4JVertex implements Node {
         private static final String WORD = "word";
         private static final String TITLE = "title";
         private static final String NAME = "name";
-        private final Node inner;
+        private final org.neo4j.graphdb.Node inner;
 
-        public Neo4JVertex(Node inner) {
+        public Neo4JVertex(org.neo4j.graphdb.Node inner) {
             this.inner = inner;
         }
 
@@ -194,11 +179,12 @@ public class Neo4JDemo extends Application {
         }
     }
 
-    private static final class Neo4JEdge implements Edge {
-        private final Relationship inner;
+    private static final class Neo4JEdge implements Arc {
+        private final org.neo4j.graphdb.Relationship inner;
         private Neo4JGraphProvider parent;
 
-        public Neo4JEdge(Neo4JGraphProvider parent, Relationship inner) {
+        public Neo4JEdge(Neo4JGraphProvider parent,
+                org.neo4j.graphdb.Relationship inner) {
             this.parent = parent;
             this.inner = inner;
         }
@@ -268,7 +254,7 @@ public class Neo4JDemo extends Application {
             };
         }
 
-        public Vertex getOtherEnd(Vertex v) {
+        public Node getOtherEnd(Node v) {
             return parent.getOpposite(v, this);
         }
     }
