@@ -1,3 +1,7 @@
 Manifest-Version: 1.0
+Implementation-Title: Neo4J
+Implementation-Version: 1.0.0
+Vaadin-Package-Version: 1
+Vaadin-Widgetsets: com.vaadin.graph.demo.neo4j.Neo4JDemoWidgetset
 Class-Path: 
 

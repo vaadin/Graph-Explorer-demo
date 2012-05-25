@@ -10,8 +10,8 @@ import com.vaadin.graph.*;
 final class Neo4JRepository implements GraphRepository<Neo4JNode, Neo4JArc> {
     private final EmbeddedGraphDatabase inner;
 
-    public Neo4JRepository(String dbDir) {
-        inner = new EmbeddedGraphDatabase(dbDir);
+    public Neo4JRepository(EmbeddedGraphDatabase graphdb) {
+        inner = graphdb;
     }
 
     public Neo4JNode getVertexById(String id) {
@@ -28,10 +28,6 @@ final class Neo4JRepository implements GraphRepository<Neo4JNode, Neo4JArc> {
             labels.add(type.name());
         }
         return labels;
-    }
-
-    public void shutdown() {
-        inner.shutdown();
     }
 
     public Neo4JNode getSource(Neo4JArc edge) {

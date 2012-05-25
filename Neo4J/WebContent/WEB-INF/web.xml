@@ -9,6 +9,9 @@
 		<param-name>productionMode</param-name>
 		<param-value>false</param-value>
 	</context-param>
+        <listener>
+                <listener-class>com.vaadin.graph.demo.neo4j.Neo4JContextListener</listener-class>
+        </listener>
 	<servlet>
 		<servlet-name>Neo4J</servlet-name>
 		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
