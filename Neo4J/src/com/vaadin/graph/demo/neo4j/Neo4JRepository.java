@@ -14,15 +14,15 @@ final class Neo4JRepository implements GraphRepository<Neo4JNode, Neo4JArc> {
         inner = graphdb;
     }
 
-    public Neo4JNode getVertexById(String id) {
+    public Neo4JNode getNodeById(String id) {
         return new Neo4JNode(inner.getNodeById(Long.parseLong(id)));
     }
 
-    public Neo4JNode getHomeVertex() {
+    public Neo4JNode getHomeNode() {
         return new Neo4JNode(inner.getReferenceNode());
     }
 
-    public Collection<String> getEdgeLabels() {
+    public Collection<String> getArcLabels() {
         Set<String> labels = new HashSet<String>();
         for (RelationshipType type : inner.getRelationshipTypes()) {
             labels.add(type.name());
@@ -30,19 +30,19 @@ final class Neo4JRepository implements GraphRepository<Neo4JNode, Neo4JArc> {
         return labels;
     }
 
-    public Neo4JNode getSource(Neo4JArc edge) {
-        return new Neo4JNode(edge.inner.getStartNode());
+    public Neo4JNode getSource(Neo4JArc arc) {
+        return new Neo4JNode(arc.inner.getStartNode());
     }
 
-    public Neo4JNode getDestination(Neo4JArc edge) {
-        return new Neo4JNode(edge.inner.getEndNode());
+    public Neo4JNode getDestination(Neo4JArc arc) {
+        return new Neo4JNode(arc.inner.getEndNode());
     }
 
-    public Neo4JNode getOpposite(Neo4JNode vertex, Neo4JArc edge) {
-        return new Neo4JNode(edge.inner.getOtherNode(vertex.inner));
+    public Neo4JNode getOpposite(Neo4JNode vertex, Neo4JArc arc) {
+        return new Neo4JNode(arc.inner.getOtherNode(vertex.inner));
     }
 
-    public Collection<Neo4JArc> getEdges(Neo4JNode node, final String label,
+    public Collection<Neo4JArc> getArcs(Neo4JNode node, final String label,
             ArcDirection dir) {
         final Iterable<Relationship> rels = node.inner.getRelationships(
                 new RelationshipType() {

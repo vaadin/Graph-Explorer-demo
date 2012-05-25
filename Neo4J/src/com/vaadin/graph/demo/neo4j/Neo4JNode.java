@@ -14,19 +14,8 @@ final class Neo4JNode implements Node {
         this.inner = inner;
     }
 
-    public Iterable<String> getPropertyKeys() {
-        Set<String> keys = new HashSet<String>();
-        for (String key : inner.getPropertyKeys()) {
-            keys.add(key);
-        }
-        keys.remove(NAME);
-        keys.remove(TITLE);
-        keys.remove(WORD);
-        return keys;
-    }
-
-    public Object getProperty(String key, Object defaultValue) {
-        return inner.getProperty(key, defaultValue);
+    public Map<String, Object> getProperties() {
+        return new Neo4JPropertyMap(inner);
     }
 
     public String getId() {
