@@ -8,23 +8,23 @@ import org.neo4j.kernel.*;
 import com.vaadin.graph.*;
 
 final class Neo4JRepository implements GraphRepository<Neo4JNode, Neo4JArc> {
-    private final EmbeddedGraphDatabase inner;
+    private final EmbeddedGraphDatabase graphdb;
 
     public Neo4JRepository(EmbeddedGraphDatabase graphdb) {
-        inner = graphdb;
+        this.graphdb = graphdb;
     }
 
     public Neo4JNode getNodeById(String id) {
-        return new Neo4JNode(inner.getNodeById(Long.parseLong(id)));
+        return new Neo4JNode(graphdb.getNodeById(Long.parseLong(id)));
     }
 
     public Neo4JNode getHomeNode() {
-        return new Neo4JNode(inner.getReferenceNode());
+        return new Neo4JNode(graphdb.getReferenceNode());
     }
 
     public Collection<String> getArcLabels() {
         Set<String> labels = new HashSet<String>();
-        for (RelationshipType type : inner.getRelationshipTypes()) {
+        for (RelationshipType type : graphdb.getRelationshipTypes()) {
             labels.add(type.name());
         }
         return labels;
@@ -64,7 +64,7 @@ final class Neo4JRepository implements GraphRepository<Neo4JNode, Neo4JArc> {
                     }
 
                     public Neo4JArc next() {
-                        return new Neo4JArc(Neo4JRepository.this, iter.next());
+                        return new Neo4JArc(iter.next());
                     }
 
                     public void remove() {

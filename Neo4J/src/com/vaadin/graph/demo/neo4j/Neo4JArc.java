@@ -6,10 +6,8 @@ import com.vaadin.graph.*;
 
 final class Neo4JArc implements Arc {
     final org.neo4j.graphdb.Relationship inner;
-    private Neo4JRepository parent;
 
-    public Neo4JArc(Neo4JRepository parent, org.neo4j.graphdb.Relationship inner) {
-        this.parent = parent;
+    public Neo4JArc(org.neo4j.graphdb.Relationship inner) {
         this.inner = inner;
     }
 
@@ -23,9 +21,5 @@ final class Neo4JArc implements Arc {
 
     public Map<String, Object> getProperties() {
         return new Neo4JPropertyMap(inner);
-    }
-
-    public Node getOtherEnd(Node v) {
-        return parent.getOpposite((Neo4JNode) v, this);
     }
 }
