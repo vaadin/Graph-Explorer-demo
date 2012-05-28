@@ -1,8 +1,8 @@
 package com.vaadin.graph.demo.neo4j;
 
-import java.util.*;
+import java.util.Map;
 
-import com.vaadin.graph.*;
+import com.vaadin.graph.Arc;
 
 final class Neo4JArc implements Arc {
     final org.neo4j.graphdb.Relationship inner;

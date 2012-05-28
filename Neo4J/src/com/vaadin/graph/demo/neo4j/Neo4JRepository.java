@@ -3,7 +3,7 @@ package com.vaadin.graph.demo.neo4j;
 import java.util.*;
 
 import org.neo4j.graphdb.*;
-import org.neo4j.kernel.*;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 import com.vaadin.graph.*;
 
@@ -43,7 +43,7 @@ final class Neo4JRepository implements GraphRepository<Neo4JNode, Neo4JArc> {
     }
 
     public Collection<Neo4JArc> getArcs(Neo4JNode node, final String label,
-            ArcDirection dir) {
+            Arc.Direction dir) {
         final Iterable<Relationship> rels = node.inner.getRelationships(
                 new RelationshipType() {
 

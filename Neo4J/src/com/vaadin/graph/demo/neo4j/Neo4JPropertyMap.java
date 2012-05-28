@@ -2,7 +2,7 @@ package com.vaadin.graph.demo.neo4j;
 
 import java.util.*;
 
-import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.PropertyContainer;
 
 final class Neo4JPropertyMap extends AbstractMap<String, Object> {
     private PropertyContainer container;

@@ -15,13 +15,13 @@
  */
 package com.vaadin.graph.demo.neo4j;
 
-import javax.servlet.*;
+import javax.servlet.ServletContext;
 
-import org.neo4j.kernel.*;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
-import com.vaadin.*;
+import com.vaadin.Application;
 import com.vaadin.graph.*;
-import com.vaadin.terminal.gwt.server.*;
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 
 public class Neo4JDemo extends Application {

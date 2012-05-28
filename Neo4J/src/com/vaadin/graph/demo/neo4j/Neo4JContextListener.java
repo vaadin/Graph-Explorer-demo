@@ -4,7 +4,7 @@ import java.io.*;
 
 import javax.servlet.*;
 
-import org.neo4j.kernel.*;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class Neo4JContextListener implements ServletContextListener {
     private final String path;
