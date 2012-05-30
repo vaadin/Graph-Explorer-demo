@@ -20,27 +20,25 @@ import javax.servlet.ServletContext;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 import com.vaadin.Application;
-import com.vaadin.graph.*;
+import com.vaadin.graph.GraphExplorer;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 
 public class Neo4JDemo extends Application {
+    private static final long serialVersionUID = 1L;
     public static final String GRAPHDB = "graphdb";
     private Window window;
 
     @Override
     public void init() {
-        ServletContext servletContext = ((WebApplicationContext) getContext())
-                .getHttpSession().getServletContext();
-        EmbeddedGraphDatabase graphdb = (EmbeddedGraphDatabase) servletContext
-                .getAttribute(GRAPHDB);
+        ServletContext servletContext = ((WebApplicationContext) getContext()).getHttpSession().getServletContext();
+        EmbeddedGraphDatabase graphdb = (EmbeddedGraphDatabase) servletContext.getAttribute(GRAPHDB);
 
         window = new Window("Graph Explorer demo");
         setMainWindow(window);
 
-        GraphExplorer graph = new GraphExplorer(
-                new DefaultGraphController<Neo4JNode, Neo4JArc>(
-                        new Neo4JRepository(graphdb)));
+        Neo4JRepository repo = new Neo4JRepository(graphdb);
+        GraphExplorer<Neo4JNode, Neo4JArc> graph = new GraphExplorer<Neo4JNode, Neo4JArc>(repo);
         window.addComponent(graph);
 
         VerticalLayout content = (VerticalLayout) window.getContent();

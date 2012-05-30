@@ -18,31 +18,36 @@ final class Neo4JPropertyMap extends AbstractMap<String, Object> {
             @Override
             public Iterator<Map.Entry<String, Object>> iterator() {
                 return new Iterator<Map.Entry<String, Object>>() {
-                    final Iterator<String> keys = container.getPropertyKeys()
-                            .iterator();
+                    final Iterator<String> keys = container.getPropertyKeys().iterator();
 
+                    @Override
                     public boolean hasNext() {
                         return keys.hasNext();
                     }
 
+                    @Override
                     public Map.Entry<String, Object> next() {
                         return new Map.Entry<String, Object>() {
                             final String key = keys.next();
 
+                            @Override
                             public String getKey() {
                                 return key;
                             }
 
+                            @Override
                             public Object getValue() {
                                 return container.getProperty(key, null);
                             }
 
+                            @Override
                             public Object setValue(Object value) {
                                 throw new UnsupportedOperationException();
                             }
                         };
                     }
 
+                    @Override
                     public void remove() {
                         throw new UnsupportedOperationException();
                     }

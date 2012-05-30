@@ -11,14 +11,17 @@ final class Neo4JArc implements Arc {
         this.inner = inner;
     }
 
+    @Override
     public String getId() {
         return "" + inner.getId();
     }
 
+    @Override
     public String getLabel() {
         return inner.getType().name();
     }
 
+    @Override
     public Map<String, Object> getProperties() {
         return new Neo4JPropertyMap(inner);
     }

@@ -14,14 +14,17 @@ final class Neo4JNode implements Node {
         this.inner = inner;
     }
 
+    @Override
     public Map<String, Object> getProperties() {
         return new Neo4JPropertyMap(inner);
     }
 
+    @Override
     public String getId() {
         return "" + inner.getId();
     }
 
+    @Override
     public String getLabel() {
         String property;
         if (inner.hasProperty(NAME)) {
